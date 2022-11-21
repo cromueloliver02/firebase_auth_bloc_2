@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "750370149602",
+    "project_id": "firebase-auth-bloc2-02",
+    "storage_bucket": "firebase-auth-bloc2-02.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:750370149602:android:ab2d1d642a210dc8fa3abb",
+        "android_client_info": {
+          "package_name": "com.example.firebase_auth_bloc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "750370149602-evldqq9t3jcfqhi4mj06qn83vb5j8kj7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAFlNjh58ZDzFizE8GafKWMO74nB8XiAO8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "750370149602-evldqq9t3jcfqhi4mj06qn83vb5j8kj7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

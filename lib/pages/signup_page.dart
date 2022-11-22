@@ -5,10 +5,10 @@ import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
 import '../pages/pages.dart';
 
-class SigninPage extends StatelessWidget {
-  static const id = '/signin';
+class SignupPage extends StatelessWidget {
+  static const id = '/signup';
 
-  const SigninPage({super.key});
+  const SignupPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -41,9 +41,10 @@ class _FormBody extends StatefulWidget {
 }
 
 class _FormBodyState extends State<_FormBody> {
+  late final TextEditingController _passwordController;
   final _formKey = GlobalKey<FormState>();
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
-  String? _email, _password;
+  String? _name, _email, _password;
 
   void _signin() {
     final FormState? form = _formKey.currentState;
@@ -55,9 +56,22 @@ class _FormBodyState extends State<_FormBody> {
     form.save();
 
     if (kDebugMode) {
+      print('_name $_name');
       print('_email $_email');
       print('_password $_password');
     }
+  }
+
+  String? _nameValidator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Name is required';
+    }
+
+    if (value.trim().length < 6) {
+      return 'Name must be at least 6 characters long';
+    }
+
+    return null;
   }
 
   String? _emailValidator(String? value) {
@@ -82,9 +96,21 @@ class _FormBodyState extends State<_FormBody> {
     return null;
   }
 
-  void _goToSignup() => Navigator.pushReplacementNamed(
+  String? _confirmPasswordValidator(String? value) {
+    if (value == null || value.trim().isEmpty) {
+      return 'Confirm password is required';
+    }
+
+    if (_passwordController.text.trim() != value.trim()) {
+      return 'Passwords does not match';
+    }
+
+    return null;
+  }
+
+  void _goToSignin() => Navigator.pushReplacementNamed(
         context,
-        SignupPage.id,
+        SigninPage.id,
       );
 
   @override
@@ -105,6 +131,19 @@ class _FormBodyState extends State<_FormBody> {
           TextFormField(
             enabled: true,
             autocorrect: false,
+            decoration: const InputDecoration(
+              filled: true,
+              labelText: 'Name',
+              prefixIcon: Icon(Icons.account_circle),
+              border: OutlineInputBorder(),
+            ),
+            validator: _nameValidator,
+            onSaved: (value) => _name = value,
+          ),
+          const SizedBox(height: 10),
+          TextFormField(
+            enabled: true,
+            autocorrect: false,
             keyboardType: TextInputType.emailAddress,
             decoration: const InputDecoration(
               filled: true,
@@ -117,6 +156,7 @@ class _FormBodyState extends State<_FormBody> {
           ),
           const SizedBox(height: 10),
           TextFormField(
+            controller: _passwordController,
             enabled: true,
             obscureText: true,
             decoration: const InputDecoration(
@@ -129,6 +169,18 @@ class _FormBodyState extends State<_FormBody> {
             onSaved: (value) => _password = value,
           ),
           const SizedBox(height: 10),
+          TextFormField(
+            enabled: true,
+            obscureText: true,
+            decoration: const InputDecoration(
+              filled: true,
+              labelText: 'Confirm Password',
+              prefixIcon: Icon(Icons.lock),
+              border: OutlineInputBorder(),
+            ),
+            validator: _confirmPasswordValidator,
+          ),
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: _signin,
             style: ElevatedButton.styleFrom(
@@ -137,21 +189,33 @@ class _FormBodyState extends State<_FormBody> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            child: const Text('SIGN IN'),
+            child: const Text('SIGN UP'),
           ),
           const SizedBox(height: 10),
           TextButton(
-            onPressed: _goToSignup,
+            onPressed: _goToSignin,
             style: TextButton.styleFrom(
               textStyle: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            child: const Text('Not a member? Sign up!'),
+            child: const Text('Member already? Sign in!'),
           ),
         ].reversed.toList(),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _passwordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _passwordController.dispose();
+    super.dispose();
   }
 }

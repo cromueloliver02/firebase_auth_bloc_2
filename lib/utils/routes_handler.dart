@@ -6,5 +6,6 @@ class RoutesHandler {
   final Map<String, WidgetBuilder> routes = {
     SplashPage.id: (ctx) => const SplashPage(),
     SigninPage.id: (ctx) => const SigninPage(),
+    SignupPage.id: (ctx) => const SignupPage(),
   };
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import './pages/pages.dart';
+
 class FirebaseAuthApp extends StatelessWidget {
   const FirebaseAuthApp({super.key});
 
@@ -10,11 +12,7 @@ class FirebaseAuthApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Scaffold(
-        body: Center(
-          child: Text('FIREBASE AUTH APP'),
-        ),
-      ),
+      home: const SplashPage(),
     );
   }
 }

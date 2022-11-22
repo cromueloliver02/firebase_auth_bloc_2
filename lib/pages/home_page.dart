@@ -1,6 +1,7 @@
-import 'package:firebase_auth_bloc/pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+
+import '../pages/pages.dart';
 
 class HomePage extends StatelessWidget {
   static const id = '/home';
@@ -14,7 +15,7 @@ class HomePage extends StatelessWidget {
 
   void _signout(BuildContext ctx) => Navigator.popUntil(
         ctx,
-        (route) => ModalRoute.of(ctx)!.settings.name == SigninPage.id,
+        (route) => route.settings.name == SigninPage.id,
       );
 
   @override

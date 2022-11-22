@@ -7,5 +7,6 @@ class RoutesHandler {
     SplashPage.id: (ctx) => const SplashPage(),
     SigninPage.id: (ctx) => const SigninPage(),
     SignupPage.id: (ctx) => const SignupPage(),
+    HomePage.id: (ctx) => const HomePage(),
   };
 }

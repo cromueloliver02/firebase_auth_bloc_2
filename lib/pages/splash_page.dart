@@ -16,7 +16,7 @@ class _SplashPageState extends State<SplashPage> {
   void initState() {
     super.initState();
 
-    _goToNextPage();
+    _goToNextPage(); // TODO: delete temporary code
   }
 
   void _goToNextPage() async {

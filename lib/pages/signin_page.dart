@@ -58,6 +58,8 @@ class _FormBodyState extends State<_FormBody> {
       print('_email $_email');
       print('_password $_password');
     }
+
+    Navigator.pushNamed(context, HomePage.id); // TODO: delete temporary code
   }
 
   String? _emailValidator(String? value) {

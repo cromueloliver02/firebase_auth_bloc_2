@@ -37,6 +37,7 @@ dependencies:
   flutter:
     sdk: flutter
   keyboard_dismisser: ^3.0.0
+  lottie: ^2.0.0
   validators: ^3.0.0
 
 dev_dependencies:

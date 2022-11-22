@@ -8,5 +8,6 @@ class RoutesHandler {
     SigninPage.id: (ctx) => const SigninPage(),
     SignupPage.id: (ctx) => const SignupPage(),
     HomePage.id: (ctx) => const HomePage(),
+    ProfilePage.id: (ctx) => const ProfilePage(),
   };
 }

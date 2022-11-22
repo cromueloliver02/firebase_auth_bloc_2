@@ -1,3 +1,4 @@
+import 'package:firebase_auth_bloc/pages/pages.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
@@ -5,6 +6,16 @@ class HomePage extends StatelessWidget {
   static const id = '/home';
 
   const HomePage({super.key});
+
+  void _goToProfile(BuildContext ctx) => Navigator.pushNamed(
+        ctx,
+        ProfilePage.id,
+      );
+
+  void _signout(BuildContext ctx) => Navigator.popUntil(
+        ctx,
+        (route) => ModalRoute.of(ctx)!.settings.name == SigninPage.id,
+      );
 
   @override
   Widget build(BuildContext context) {
@@ -17,12 +28,12 @@ class HomePage extends StatelessWidget {
           title: const Text('Home'),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () => _goToProfile(context),
               iconSize: 30,
               icon: const Icon(Icons.account_circle),
             ),
             IconButton(
-              onPressed: () {},
+              onPressed: () => _signout(context),
               iconSize: 30,
               icon: const Icon(Icons.logout),
             ),

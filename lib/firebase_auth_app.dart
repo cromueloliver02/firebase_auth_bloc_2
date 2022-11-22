@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 import './pages/pages.dart';
+import './utils/routes_handler.dart';
 
 class FirebaseAuthApp extends StatelessWidget {
-  const FirebaseAuthApp({super.key});
+  FirebaseAuthApp({super.key});
+
+  final _routesHandler = RoutesHandler();
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +15,8 @@ class FirebaseAuthApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const SplashPage(),
+      initialRoute: SplashPage.id,
+      routes: _routesHandler.routes,
     );
   }
 }

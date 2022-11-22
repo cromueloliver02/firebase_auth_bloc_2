@@ -1,7 +1,31 @@
 import 'package:flutter/material.dart';
 
-class SplashPage extends StatelessWidget {
+import '../pages/pages.dart';
+
+class SplashPage extends StatefulWidget {
+  static const id = '/splash';
+
   const SplashPage({super.key});
+
+  @override
+  State<SplashPage> createState() => _SplashPageState();
+}
+
+class _SplashPageState extends State<SplashPage> {
+  @override
+  void initState() {
+    super.initState();
+
+    _goToNextPage();
+  }
+
+  void _goToNextPage() async {
+    final navigator = Navigator.of(context);
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    navigator.pushNamed(SigninPage.id);
+  }
 
   @override
   Widget build(BuildContext context) {

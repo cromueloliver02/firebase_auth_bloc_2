@@ -1,53 +1,47 @@
 import 'package:flutter/material.dart';
 
+import '../blocs/blocs.dart';
 import '../pages/pages.dart';
 
-class SplashPage extends StatefulWidget {
+class SplashPage extends StatelessWidget {
   static const id = '/splash';
 
   const SplashPage({super.key});
 
-  @override
-  State<SplashPage> createState() => _SplashPageState();
-}
+  void _authListener(BuildContext ctx, AuthState state) {
+    if (state.status == AuthStatus.unauthenticated) {
+      Navigator.pushNamed(ctx, SigninPage.id);
+    }
 
-class _SplashPageState extends State<SplashPage> {
-  @override
-  void initState() {
-    super.initState();
-
-    _goToNextPage(); // TODO: delete temporary code
-  }
-
-  void _goToNextPage() async {
-    final navigator = Navigator.of(context);
-
-    await Future.delayed(const Duration(seconds: 1));
-
-    navigator.pushNamed(SigninPage.id);
+    if (state.status == AuthStatus.authenticated) {
+      Navigator.pushNamed(ctx, HomePage.id);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/images/flutter_logo.png'),
-            const SizedBox(height: 50),
-            const SizedBox(
-              height: 75,
-              width: 75,
-              child: CircularProgressIndicator(),
-            ),
-            const SizedBox(height: 50),
-            const Text(
-              'LOADING ...',
-              style: TextStyle(fontSize: 20),
-            ),
-          ],
+      body: BlocListener<AuthBloc, AuthState>(
+        listener: _authListener,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/flutter_logo.png'),
+              const SizedBox(height: 50),
+              const SizedBox(
+                height: 75,
+                width: 75,
+                child: CircularProgressIndicator(),
+              ),
+              const SizedBox(height: 50),
+              const Text(
+                'LOADING ...',
+                style: TextStyle(fontSize: 20),
+              ),
+            ],
+          ),
         ),
       ),
     );

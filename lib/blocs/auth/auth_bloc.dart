@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_auth/firebase_auth.dart' as fb_auth;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
@@ -8,17 +10,24 @@ part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
+  late final StreamSubscription authSubscription;
   final AuthRepository authRepository;
 
   AuthBloc({
     required this.authRepository,
   }) : super(AuthState.initial()) {
-    authRepository.user.listen((fb_auth.User? user) {
+    authSubscription = authRepository.user.listen((fb_auth.User? user) {
       add(UserStateChangedEvent(user: user));
     });
 
     on<UserStateChangedEvent>(_userStateChanged);
     on<SignoutRequestedEvent>(_signoutRequested);
+  }
+
+  @override
+  Future<void> close() {
+    authSubscription.cancel();
+    return super.close();
   }
 
   void _userStateChanged(

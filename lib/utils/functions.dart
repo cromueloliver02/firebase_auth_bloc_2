@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../models/models.dart';
 
 void showErrorMessageDialog(BuildContext ctx, CustomError err) {
-  if (!Platform.isIOS) {
+  if (Platform.isIOS) {
     showCupertinoDialog(
       context: ctx,
       barrierDismissible: false,
@@ -29,7 +29,7 @@ void showErrorMessageDialog(BuildContext ctx, CustomError err) {
     );
   }
 
-  if (!Platform.isAndroid) {
+  if (Platform.isAndroid) {
     showDialog(
       context: ctx,
       barrierDismissible: false,

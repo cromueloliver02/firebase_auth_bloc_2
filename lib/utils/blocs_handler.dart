@@ -13,6 +13,11 @@ class BlocsHandler {
         firebaseFirestore: FirebaseFirestore.instance,
       ),
     ),
+    RepositoryProvider<ProfileRepository>(
+      create: (ctx) => ProfileRepository(
+        firebaseFirestore: FirebaseFirestore.instance,
+      ),
+    ),
   ];
 
   final List<BlocProvider> blocProviders = [
@@ -29,6 +34,11 @@ class BlocsHandler {
     BlocProvider<SignupCubit>(
       create: (ctx) => SignupCubit(
         authRepository: ctx.read<AuthRepository>(),
+      ),
+    ),
+    BlocProvider<ProfileCubit>(
+      create: (ctx) => ProfileCubit(
+        profileRepository: ctx.read<ProfileRepository>(),
       ),
     ),
   ];

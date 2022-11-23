@@ -17,3 +17,5 @@ class UserStateChangedEvent extends AuthEvent {
   @override
   List<Object?> get props => [user];
 }
+
+class SignoutRequestedEvent extends AuthEvent {}

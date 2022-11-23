@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
+import '../blocs/blocs.dart';
 import '../pages/pages.dart';
 
 class HomePage extends StatelessWidget {
@@ -13,10 +14,9 @@ class HomePage extends StatelessWidget {
         ProfilePage.id,
       );
 
-  void _signout(BuildContext ctx) => Navigator.popUntil(
-        ctx,
-        (route) => route.settings.name == SigninPage.id,
-      );
+  void _signout(BuildContext ctx) {
+    ctx.read<AuthBloc>().add(SignoutRequestedEvent());
+  }
 
   @override
   Widget build(BuildContext context) {

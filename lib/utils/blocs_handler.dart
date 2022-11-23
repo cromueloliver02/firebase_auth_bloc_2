@@ -26,5 +26,10 @@ class BlocsHandler {
         authRepository: ctx.read<AuthRepository>(),
       ),
     ),
+    BlocProvider<SignupCubit>(
+      create: (ctx) => SignupCubit(
+        authRepository: ctx.read<AuthRepository>(),
+      ),
+    ),
   ];
 }

@@ -3,7 +3,6 @@ import 'package:flutter/foundation.dart';
 import 'package:validators/validators.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
-import '../blocs/blocs.dart';
 import '../cubits/cubits.dart';
 import '../pages/pages.dart';
 import '../utils/utils.dart';
@@ -62,7 +61,10 @@ class _FormBodyState extends State<_FormBody> {
       print('_password $_password');
     }
 
-    context.read<SigninCubit>().signin(email: _email!, password: _password!);
+    context.read<SigninCubit>().signin(
+          email: _email!,
+          password: _password!,
+        );
   }
 
   String? _emailValidator(String? value) {
@@ -146,21 +148,21 @@ class _FormBodyState extends State<_FormBody> {
               ),
               const SizedBox(height: 10),
               ElevatedButton(
-                onPressed: status == SigninStatus.submitting ? null : _signin,
+                onPressed: status != SigninStatus.submitting ? _signin : null,
                 style: ElevatedButton.styleFrom(
                   textStyle: const TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w500,
                   ),
                 ),
-                child: Text(status == SigninStatus.submitting
-                    ? 'LOADING...'
-                    : 'SIGN IN'),
+                child: Text(status != SigninStatus.submitting
+                    ? 'SIGN IN'
+                    : 'LOADING...'),
               ),
               const SizedBox(height: 10),
               TextButton(
                 onPressed:
-                    status == SigninStatus.submitting ? null : _goToSignup,
+                    status != SigninStatus.submitting ? _goToSignup : null,
                 style: TextButton.styleFrom(
                   textStyle: const TextStyle(
                     fontSize: 18,

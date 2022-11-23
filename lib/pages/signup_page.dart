@@ -3,7 +3,9 @@ import 'package:flutter/foundation.dart';
 import 'package:validators/validators.dart';
 import 'package:keyboard_dismisser/keyboard_dismisser.dart';
 
+import '../cubits/cubits.dart';
 import '../pages/pages.dart';
+import '../utils/utils.dart';
 
 class SignupPage extends StatelessWidget {
   static const id = '/signup';
@@ -46,7 +48,7 @@ class _FormBodyState extends State<_FormBody> {
   AutovalidateMode _autovalidateMode = AutovalidateMode.disabled;
   String? _name, _email, _password;
 
-  void _signin() {
+  void _signup() {
     final FormState? form = _formKey.currentState;
 
     setState(() => _autovalidateMode = AutovalidateMode.always);
@@ -61,7 +63,11 @@ class _FormBodyState extends State<_FormBody> {
       print('_password $_password');
     }
 
-    Navigator.pushNamed(context, HomePage.id); // TODO: delete temporary code
+    context.read<SignupCubit>().signup(
+          name: _name!,
+          email: _email!,
+          password: _password!,
+        );
   }
 
   String? _nameValidator(String? value) {
@@ -115,96 +121,112 @@ class _FormBodyState extends State<_FormBody> {
         SigninPage.id,
       );
 
+  void _signupListener(BuildContext ctx, SignupState state) {
+    if (state.status == SignupStatus.error) {
+      showErrorMessageDialog(ctx, state.error);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
       autovalidateMode: _autovalidateMode,
-      child: ListView(
-        reverse: true,
-        shrinkWrap: true,
-        children: [
-          Image.asset(
-            'assets/images/flutter_logo.png',
-            width: 250,
-            height: 250,
-          ),
-          const SizedBox(height: 50),
-          TextFormField(
-            enabled: true,
-            autocorrect: false,
-            decoration: const InputDecoration(
-              filled: true,
-              labelText: 'Name',
-              prefixIcon: Icon(Icons.account_circle),
-              border: OutlineInputBorder(),
-            ),
-            validator: _nameValidator,
-            onSaved: (value) => _name = value,
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            enabled: true,
-            autocorrect: false,
-            keyboardType: TextInputType.emailAddress,
-            decoration: const InputDecoration(
-              filled: true,
-              labelText: 'Email',
-              prefixIcon: Icon(Icons.email),
-              border: OutlineInputBorder(),
-            ),
-            validator: _emailValidator,
-            onSaved: (value) => _email = value,
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            controller: _passwordController,
-            enabled: true,
-            obscureText: true,
-            decoration: const InputDecoration(
-              filled: true,
-              labelText: 'Password',
-              prefixIcon: Icon(Icons.lock),
-              border: OutlineInputBorder(),
-            ),
-            validator: _passwordValidator,
-            onSaved: (value) => _password = value,
-          ),
-          const SizedBox(height: 10),
-          TextFormField(
-            enabled: true,
-            obscureText: true,
-            decoration: const InputDecoration(
-              filled: true,
-              labelText: 'Confirm Password',
-              prefixIcon: Icon(Icons.lock),
-              border: OutlineInputBorder(),
-            ),
-            validator: _confirmPasswordValidator,
-          ),
-          const SizedBox(height: 10),
-          ElevatedButton(
-            onPressed: _signin,
-            style: ElevatedButton.styleFrom(
-              textStyle: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+      child: BlocConsumer<SignupCubit, SignupState>(
+        listener: _signupListener,
+        builder: (ctx, state) {
+          final status = state.status;
+
+          return ListView(
+            reverse: true,
+            shrinkWrap: true,
+            children: [
+              Image.asset(
+                'assets/images/flutter_logo.png',
+                width: 250,
+                height: 250,
               ),
-            ),
-            child: const Text('SIGN UP'),
-          ),
-          const SizedBox(height: 10),
-          TextButton(
-            onPressed: _goToSignin,
-            style: TextButton.styleFrom(
-              textStyle: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
+              const SizedBox(height: 50),
+              TextFormField(
+                autocorrect: false,
+                enabled: status != SignupStatus.submitting,
+                decoration: const InputDecoration(
+                  filled: true,
+                  labelText: 'Name',
+                  prefixIcon: Icon(Icons.account_circle),
+                  border: OutlineInputBorder(),
+                ),
+                validator: _nameValidator,
+                onSaved: (value) => _name = value,
               ),
-            ),
-            child: const Text('Member already? Sign in!'),
-          ),
-        ].reversed.toList(),
+              const SizedBox(height: 10),
+              TextFormField(
+                autocorrect: false,
+                keyboardType: TextInputType.emailAddress,
+                enabled: status != SignupStatus.submitting,
+                decoration: const InputDecoration(
+                  filled: true,
+                  labelText: 'Email',
+                  prefixIcon: Icon(Icons.email),
+                  border: OutlineInputBorder(),
+                ),
+                validator: _emailValidator,
+                onSaved: (value) => _email = value,
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                enabled: status != SignupStatus.submitting,
+                decoration: const InputDecoration(
+                  filled: true,
+                  labelText: 'Password',
+                  prefixIcon: Icon(Icons.lock),
+                  border: OutlineInputBorder(),
+                ),
+                validator: _passwordValidator,
+                onSaved: (value) => _password = value,
+              ),
+              const SizedBox(height: 10),
+              TextFormField(
+                obscureText: true,
+                enabled: status != SignupStatus.submitting,
+                decoration: const InputDecoration(
+                  filled: true,
+                  labelText: 'Confirm Password',
+                  prefixIcon: Icon(Icons.lock),
+                  border: OutlineInputBorder(),
+                ),
+                validator: _confirmPasswordValidator,
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: status != SignupStatus.submitting ? _signup : null,
+                style: ElevatedButton.styleFrom(
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                child: Text(status != SignupStatus.submitting
+                    ? 'SIGN UP'
+                    : 'LOADING...'),
+              ),
+              const SizedBox(height: 10),
+              TextButton(
+                onPressed:
+                    status != SignupStatus.submitting ? _goToSignin : null,
+                style: TextButton.styleFrom(
+                  textStyle: const TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                child: const Text('Member already? Sign in!'),
+              ),
+            ].reversed.toList(),
+          );
+        },
       ),
     );
   }

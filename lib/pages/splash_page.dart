@@ -10,7 +10,11 @@ class SplashPage extends StatelessWidget {
 
   void _authListener(BuildContext ctx, AuthState state) {
     if (state.status == AuthStatus.unauthenticated) {
-      Navigator.pushNamed(ctx, SigninPage.id);
+      Navigator.pushNamedAndRemoveUntil(
+        ctx,
+        SigninPage.id,
+        (route) => route.settings.name == ModalRoute.of(ctx)!.settings.name,
+      );
     }
 
     if (state.status == AuthStatus.authenticated) {

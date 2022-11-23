@@ -6,9 +6,9 @@ class CustomError extends Equatable {
   final String plugin;
 
   const CustomError({
-    required this.code,
-    required this.message,
-    required this.plugin,
+    this.code = '',
+    this.message = '',
+    this.plugin = '',
   });
 
   @override

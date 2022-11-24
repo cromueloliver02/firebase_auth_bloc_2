@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import './blocs/blocs.dart';
 import './pages/pages.dart';
 import './utils/utils.dart';
 
@@ -21,7 +22,7 @@ class FirebaseAuthApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
-          initialRoute: SplashPage.id,
+          home: const AuthPage(),
           routes: _routesHandler.routes,
         ),
       ),
